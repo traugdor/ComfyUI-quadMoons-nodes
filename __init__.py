@@ -6,13 +6,16 @@
 """
 
 from .theButton import quadmoonThebutton
+from .clipTextEncoder import quadmoonCLIPTextEncode
 
 NODE_CLASS_MAPPINGS = {
     "quadmoonThebutton": quadmoonThebutton,
+    "quadmoonCLIPTextEncode": quadmoonCLIPTextEncode
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonThebutton": "quadmoon's Nodes - The BUTTON",
+    "quadmoonCLIPTextEncode": "quadmoon's Nodes - CLIP exText Encode"
 }
 
 WEB_DIRECTORY = "js"

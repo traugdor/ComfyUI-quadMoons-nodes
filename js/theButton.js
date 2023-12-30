@@ -13,7 +13,6 @@ function rebootComfy(args) {
     if (confirm("This will REBOOT ComfyUI. Are you sure?")) {
 		try {
 			api.fetchApi("/manager/reboot");
-            location.reload();
 		}
 		catch(exception) {
             alert("Reboot failed. Please check console logs for potential errors.");
