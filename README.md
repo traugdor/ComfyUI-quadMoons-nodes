@@ -8,9 +8,10 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 
 ### Existing Nodes
 * **The BUTTON** - A one-stop-shop for cancelling your queue or rebooting ComfyUI entirely. Something gone wrong with your setup? Hit ***The BUTTON***. It will take care of everything for you. Use responsibly.
+* **CLIP Text Encoder** - Your regular `CLIP Text Encoder` node but the text to encode with CLIP defaults to an input instead of a text box. No more right-clicking and converting the text to an input!
 
 ### Planned Nodes
-* **CLIP Text Encoder** - Your regular `CLIP Text Encoder` node but the text to encode with CLIP defaults to an input instead of a text box. No more right-clicking and converting the text to an input! WIP
+
 
 ## Installation
 
