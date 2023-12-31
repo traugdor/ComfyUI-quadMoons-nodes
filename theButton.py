@@ -8,7 +8,11 @@ class quadmoonThebutton:
     # This button provides an easier place for you to kill your workflow if you see something has gone wrong.
     @classmethod
     def INPUT_TYPES(cls):
-        inputs = {}
+        inputs = {
+            "required": {},
+            "optional": {},
+            "hidden": {}
+        }
 
         return inputs
 

@@ -2,6 +2,8 @@ import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
 import { ComfyWidgets } from "../../scripts/widgets.js";
 
+var initialized = false;
+
 function killOrRestart(args) {
     var currentNode = app.runningNodeId;
     if(!!currentNode){
@@ -31,5 +33,30 @@ app.registerExtension({
                 rebootComfy(event);
             });
         }
+        for (const w of node.widgets || []) {
+            let widgetValue = w.value;
+
+            // Store the original descriptor if it exists
+            let originalDescriptor = Object.getOwnPropertyDescriptor(w, 'value');
+            Object.defineProperty(w, 'value', {
+                get() {
+                    // If there's an original getter, use it. Otherwise, return widgetValue.
+                    let valueToReturn = originalDescriptor && originalDescriptor.get
+                        ? originalDescriptor.get.call(w)
+                        : widgetValue;
+
+                    return valueToReturn;
+                },
+                set(newVal) {
+                    // If there's an original setter, use it. Otherwise, set widgetValue.
+                    if (originalDescriptor && originalDescriptor.set) {
+                        originalDescriptor.set.call(w, newVal);
+                    } else {
+                        widgetValue = newVal;
+                    }
+                }
+            });
+        }
+        setTimeout(() => { initialized = true; }, 500);
     },
 });
