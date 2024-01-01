@@ -11,7 +11,7 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 * **CLIP External Text Encoder** - Your regular `CLIP Text Encoder` node but the text to encode with CLIP defaults to an input instead of a text box. No more right-clicking and converting the text to an input!
 
 ### Planned Nodes
-
+* **X to String Converters** - Need to incorporate a value into a string? Maybe a filename input automation? Need to do some math and output the result into a text display? Convert it to a string and easily output it to whatever nodes you need. It even works with the [ComfyMath](https://github.com/evanspearman/ComfyMath) nodes by [evanspearman](https://github.com/evanspearman)!  (***WIP***)
 
 ## Installation
 
