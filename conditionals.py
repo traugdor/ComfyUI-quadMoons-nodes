@@ -16,8 +16,8 @@ class INTCompare:
     def INPUT_TYPES(cls):
         inputs = {
             "required": {
-                "int_a": ("int", {}),
-                "int_b": ("int", {}),
+                "int_a": ("INT", {}),
+                "int_b": ("INT", {}),
                 "op": (list(INT_BINARY_CONDITIONS.keys()),),
                 "if_true_return": (["a","b"],),
                 "if_false_return": (["a","b"],)
