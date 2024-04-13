@@ -1,15 +1,13 @@
 from typing import TypeAlias
 
 number: TypeAlias = int | float
-qmint: TypeAlias = int
-qmfloat: TypeAlias = float
 
 class IntToString:
     @classmethod
     def INPUT_TYPES(cls):
         inputs = {
             "required": {
-                "integer_input": ("int", {})
+                "integer_input": ("INT", {})
             }
         }
         return inputs
@@ -32,7 +30,7 @@ class FloatToString:
     def INPUT_TYPES(cls):
         inputs = {
             "required": {
-                "float_input": ("float", {})
+                "float_input": ("FLOAT", {})
             }
         }
         return inputs
@@ -98,8 +96,8 @@ class NormalizeHW:
     def INPUT_TYPES(cls):
         inputs = {
             "required": {
-                "height": ("int", {}),
-                "width": ("int", {}),
+                "height": ("INT", {}),
+                "width": ("INT", {}),
                 "platform":(["SD1.5", "SDXL"],)
             }
         }
