@@ -7,15 +7,29 @@
 
 from .theButton import quadmoonThebutton
 from .clipTextEncoder import quadmoonCLIPTextEncode
+from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
+from .conditionals import INTCompare
 
 NODE_CLASS_MAPPINGS = {
     "quadmoonThebutton": quadmoonThebutton,
-    "quadmoonCLIPTextEncode": quadmoonCLIPTextEncode
+    "quadmoonCLIPTextEncode": quadmoonCLIPTextEncode,
+    "quadmoonConvertIntToString": IntToString,
+    "quadmoonConvertFloatToString": FloatToString,
+    "quadmoonConvertBoolToString": BoolToString,
+    "quadmoonConvertNumberToString": NumberToString,
+    "quadmoonINTConditionalOperation": INTCompare,
+    "quadmoonConvertNormalizeHW": NormalizeHW,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "quadmoonThebutton": "quadmoon's Nodes - The BUTTON",
-    "quadmoonCLIPTextEncode": "quadmoon's Nodes - CLIP exText Encode"
+    "quadmoonThebutton": "The BUTTON",
+    "quadmoonCLIPTextEncode": "CLIP exText Encode",
+    "quadmoonConvertIntToString": "Convert Integer to String",
+    "quadmoonConvertFloatToString": "Convert Float to String",
+    "quadmoonConvertBoolToString": "Convert Bool to String",
+    "quadmoonConvertNumberToString": "Convert Number to String",
+    "quadmoonINTConditionalOperation": "INT Conditional Operation",
+    "quadmoonConvertNormalizeHW": "Normalize Image Dimensions",
 }
 
 WEB_DIRECTORY = "js"
