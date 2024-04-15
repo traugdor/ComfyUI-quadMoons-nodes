@@ -98,7 +98,8 @@ class NormalizeHW:
             "required": {
                 "height": ("INT", {}),
                 "width": ("INT", {}),
-                "platform":(["SD1.5", "SDXL"],)
+                "platform":(["SD1.5", "SDXL"],),
+                "orientation":(["portrait", "landscape"])
             }
         }
         return inputs
@@ -107,10 +108,11 @@ class NormalizeHW:
     FUNCTION = "qmNormalizeHW"
     CATEGORY = "QuadmoonNodes/Converters"
 
-    def qmNormalizeHW(self, height, width, platform):
+    def qmNormalizeHW(self, height, width, platform, orientation):
         divisor = 0.0
         newheight = 0
         newwidth = 0
+        temp = 0
         if(platform == "SD1.5"):
             if(height > width):
                 divisor = height/512.0
@@ -123,4 +125,8 @@ class NormalizeHW:
                 divisor = width/1024.0
         newheight = height/divisor
         newwidth = width/divisor
+        if((orientation == "portrait" and newheight < newwidth) or (orientation == "landscape" and newwidth < newheight)):
+            temp = newheight
+            newheight = newwidth
+            newwidth = temp
         return(int(newheight), int(newwidth),)
