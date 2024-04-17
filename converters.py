@@ -99,7 +99,7 @@ class NormalizeHW:
                 "height": ("INT", {}),
                 "width": ("INT", {}),
                 "platform":(["SD1.5", "SDXL"],),
-                "orientation":(["portrait", "landscape"],)
+                "orientation":(["original", "portrait", "landscape"],)
             }
         }
         return inputs
