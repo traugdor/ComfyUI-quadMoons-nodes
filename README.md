@@ -30,6 +30,9 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 
 * **KSampler - Extra Outputs** - Need to use the same seed value between nodes? Want to cleanup your workflow so you don't have to reuse the same node everywhere. `KSampler - Extra Outputs` may just be what you need to incorporate into your workflow!
 
+![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/96a65456-184e-4558-8ea2-b67651de645e)
+
+
 ### Planned Nodes
 * **Smart Negative** - Save common negative prompts that are used with the model of your choice. (***WIP***)
 * **Smart Template** - Save common prompt templates that are used with the model of your choice. (***WIP***)
