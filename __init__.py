@@ -9,6 +9,8 @@ from .theButton import quadmoonThebutton
 from .clipTextEncoder import quadmoonCLIPTextEncode
 from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
 from .conditionals import INTCompare
+from .samplers import qmKSampler, qmKSamplerAdvanced
+
 
 NODE_CLASS_MAPPINGS = {
     "quadmoonThebutton": quadmoonThebutton,
@@ -19,6 +21,8 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonConvertNumberToString": NumberToString,
     "quadmoonINTConditionalOperation": INTCompare,
     "quadmoonConvertNormalizeHW": NormalizeHW,
+    "quadmoonKSampler": qmKSampler,
+    "quadmoonKSamplerAdvanced": qmKSamplerAdvanced,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -30,6 +34,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonConvertNumberToString": "Convert Number to String",
     "quadmoonINTConditionalOperation": "INT Conditional Operation",
     "quadmoonConvertNormalizeHW": "Normalize Image Dimensions",
+    "quadmoonKSampler": "KSampler - Extra Outputs",
+    "quadmoonKSamplerAdvanced": "KSamplerAdvanced - Extra Outputs",
 }
 
 WEB_DIRECTORY = "js"

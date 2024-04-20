@@ -28,18 +28,19 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 
 ![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/fc4ce451-a5f7-4151-b81d-c219b8f6fba0)
 
+* **KSampler - Extra Outputs** - Need to use the same seed value between nodes? Want to cleanup your workflow so you don't have to reuse the same node everywhere. `KSampler - Extra Outputs` may just be what you need to incorporate into your workflow!
+
 ### Planned Nodes
-* **KSampler Seed Output** - Need to use the same seed value between samplers? Want to cleanup your workflow so you don't have to have connections between a seed generator everywhere? KSampler with Extra Outputs may just be what you need to incorporate into your workflow! (***WIP***)
+* **Smart Negative** - Save common negative prompts that are used with the model of your choice. (***WIP***)
+* **Smart Template** - Save common prompt templates that are used with the model of your choice. (***WIP***)
 
 ## Installation
 
-Install through ComfyUI Manager (Install via GIT URL)
-
-OR
-
+Install is currently only supported through ComfyUI Manager by use of the `Install via GIT URL` option. If you wish to install manually, instead, open the terminal program of your choosing and navigate to your ComfyUI installation. Enter the following commands:
 1. `cd custom_nodes`
 2. `git clone https://github.com/traugdor/ComfyUI-quadMoons-nodes.git`
-3. Reboot ComfyUI
+
+Any time you change the ComfyUI software or custom nodes you will need to reboot ComfyUI to see the changes.
 
 ### Uninstallation
 To uninstall **ComfyUI-quadMoons-nodes**, browse to your `custom_nodes` folder and delete the `\ComfyUI-quadMoons-nodes` folder. Reboot ComfyUI.
