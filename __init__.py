@@ -10,6 +10,7 @@ from .clipTextEncoder import quadmoonCLIPTextEncode
 from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
 from .conditionals import INTCompare
 from .samplers import qmKSampler, qmKSamplerAdvanced
+from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
 
 
 NODE_CLASS_MAPPINGS = {
@@ -23,6 +24,12 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonConvertNormalizeHW": NormalizeHW,
     "quadmoonKSampler": qmKSampler,
     "quadmoonKSamplerAdvanced": qmKSamplerAdvanced,
+    "quadmoonModelLoader": qmModelLoader,
+    "quadmoonLoadConfigs": qmLoadConfigs,
+    "quadmoonSmartPrompt": qmSmartPrompt,
+    "quadmoonSmartNeg": qmSmartNegative,
+    "quadmoonSavePrompt": qmSavePrompt,
+    "quadmoonSaveNeg": qmSaveNegative,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -36,6 +43,12 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonConvertNormalizeHW": "Normalize Image Dimensions",
     "quadmoonKSampler": "KSampler - Extra Outputs",
     "quadmoonKSamplerAdvanced": "KSamplerAdvanced - Extra Outputs",
+    "quadmoonModelLoader": "Load Model - Smart",
+    "quadmoonLoadConfigs": "Load Config - Smart",
+    "quadmoonSmartPrompt": "CLIPTextEncode - Smart Prompt",
+    "quadmoonSmartNeg": "CLIPTextEncode - Smart Negative",
+    "quadmoonSavePrompt": "Save Smart Prompt Config",
+    "quadmoonSaveNeg": "Save Smart Negative Config",
 }
 
 WEB_DIRECTORY = "js"

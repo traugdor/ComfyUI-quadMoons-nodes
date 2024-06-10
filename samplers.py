@@ -16,29 +16,38 @@ import latent_preview
 """
 
 class qmKSampler:
+    upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic", "bislerp"]
+
     @classmethod
     def INPUT_TYPES(s):
         return {"required":
-                    {"model": ("MODEL",),
-                    "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
-                    "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
-                    "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
-                    "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
-                    "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
-                    "positive": ("CONDITIONING", ),
-                    "negative": ("CONDITIONING", ),
-                    "latent_image": ("LATENT", ),
-                    "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
-                     }
+                    {
+                        "model": ("MODEL",),
+                        "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                        "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
+                        "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
+                        "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
+                        "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
+                        "positive": ("CONDITIONING", ),
+                        "negative": ("CONDITIONING", ),
+                        "latent_image": ("LATENT", ),
+                        "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
+                        "upscale_latent": (["Yes", "No"],),
+                    },
+                    "optional":
+                    {
+                        "upscale_method": (s.upscale_methods,),
+                        "ratio": ("FLOAT", {"default": 1.5, "min":0.01, "max":8.0, "step": 0.01}),
+                    }
                 }
 
-    RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING","INT","LATENT",)
-    RETURN_NAMES = ("MODEL", "POSITIVE", "NEGATIVE", "SEED", "LATENT",)
+    RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING","INT","LATENT","LATENT")
+    RETURN_NAMES = ("MODEL", "POSITIVE", "NEGATIVE", "SEED", "LATENT","UPSCALED_LATENT")
     FUNCTION = "qmSample"
 
     CATEGORY = "QuadmoonNodes/sampling"
 
-    def qmSample(self, model, seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise=1.0):
+    def qmSample(self, model, seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise, upscale_latent, upscale_method, ratio):
         disable_noise = False
         start_step = None
         last_step=None
@@ -62,26 +71,33 @@ class qmKSampler:
                                     force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
         out = latent.copy()
         out["samples"] = samples
-        return (model, positive, negative, seed, out,)
-    
+        if(upscale_latent == "Yes"):
+            s = latent.copy()
+            width = round(out["samples"].shape[3] * ratio)
+            height = round(out["samples"].shape[2] * ratio)
+            s["samples"] = comfy.utils.common_upscale(out["samples"], width, height, upscale_method, "disabled")
+            return (model, positive, negative, seed, out, s,)
+        return (model, positive, negative, seed, out, out,)
+
 class qmKSamplerAdvanced:
     @classmethod
     def INPUT_TYPES(s):
         return {"required":
-                    {"model": ("MODEL",),
-                    "add_noise": (["enable", "disable"], ),
-                    "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
-                    "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
-                    "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
-                    "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
-                    "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
-                    "positive": ("CONDITIONING", ),
-                    "negative": ("CONDITIONING", ),
-                    "latent_image": ("LATENT", ),
-                    "start_at_step": ("INT", {"default": 0, "min": 0, "max": 10000}),
-                    "end_at_step": ("INT", {"default": 10000, "min": 0, "max": 10000}),
-                    "return_with_leftover_noise": (["disable", "enable"], ),
-                     }
+                    {
+                        "model": ("MODEL",),
+                        "add_noise": (["enable", "disable"], ),
+                        "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                        "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
+                        "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
+                        "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
+                        "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
+                        "positive": ("CONDITIONING", ),
+                        "negative": ("CONDITIONING", ),
+                        "latent_image": ("LATENT", ),
+                        "start_at_step": ("INT", {"default": 0, "min": 0, "max": 10000}),
+                        "end_at_step": ("INT", {"default": 10000, "min": 0, "max": 10000}),
+                        "return_with_leftover_noise": (["disable", "enable"], ),
+                    }
                 }
 
     RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING","INT","LATENT",)

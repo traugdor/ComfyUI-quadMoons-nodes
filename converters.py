@@ -1,5 +1,13 @@
 from typing import TypeAlias
 
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), "comfy"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.getcwd())))
+
+import comfy.utils
+
 number: TypeAlias = int | float
 
 class IntToString:
@@ -96,37 +104,58 @@ class NormalizeHW:
     def INPUT_TYPES(cls):
         inputs = {
             "required": {
-                "height": ("INT", {}),
-                "width": ("INT", {}),
+                "image": ("IMAGE",),
                 "platform":(["SD1.5", "SDXL"],),
-                "orientation":(["original", "portrait", "landscape"],)
+                "orientation":(["original", "portrait", "landscape"],),
+                "attention": (["minimize", "maximize"],)
             }
         }
         return inputs
-    RETURN_TYPES = ("INT", "INT",)
-    RETURN_NAMES = ("HEIGHT", "WIDTH",)
+    RETURN_TYPES = ("IMAGE",)
     FUNCTION = "qmNormalizeHW"
     CATEGORY = "QuadmoonNodes/Converters"
 
-    def qmNormalizeHW(self, height, width, platform, orientation):
+    def qmNormalizeHW(self, image,  platform, orientation, attention):
         divisor = 0.0
+        height = image.shape[1]
+        width = image.shape[2]
         newheight = 0
         newwidth = 0
         temp = 0
-        if(platform == "SD1.5"):
-            if(height > width):
-                divisor = height/512.0
+        if(attention == "minimize"):
+            if(platform == "SD1.5"):
+                if(height > width):
+                    divisor = height/512.0
+                else:
+                    divisor = width/512.0
             else:
-                divisor = width/512.0
+                if(height > width):
+                    divisor = height/1024.0
+                else:
+                    divisor = width/1024.0
         else:
-            if(height > width):
-                divisor = height/1024.0
+            if(platform == "SD1.5"):
+                if(height > width):
+                    divisor = width/512.0
+                else:
+                    divisor = height/512.0
             else:
-                divisor = width/1024.0
-        newheight = height/divisor
-        newwidth = width/divisor
+                if(height > width):
+                    divisor = width/1024.0
+                else:
+                    divisor = height/1024.0
+        newheight = (int)(height/divisor)
+        newwidth = (int)(width/divisor)
         if((orientation == "portrait" and newheight < newwidth) or (orientation == "landscape" and newwidth < newheight)):
             temp = newheight
             newheight = newwidth
             newwidth = temp
-        return(int(newheight), int(newwidth),)
+        method = ""
+        if(divisor > 1): #downscaling
+            method = "area"
+        else:
+            method = "bicubic"
+        samples = image.movedim(-1,1)
+        s = comfy.utils.common_upscale(samples, newwidth, newheight, method, "disabled")
+        s = s.movedim(1,-1)
+        return(s,)
