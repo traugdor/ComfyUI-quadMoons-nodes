@@ -34,8 +34,8 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 
 
 ### Planned Nodes
-* **Smart Negative** - Save common negative prompts that are used with the model of your choice. (***WIP***)
-* **Smart Template** - Save common prompt templates that are used with the model of your choice. (***WIP***)
+* **Smart Negative** - Save and reuse common negative prompts that are used with the model of your choice. (***WIP***)
+* **Smart Template** - Save and reuse common prompt templates that are used with the model of your choice. (***WIP***)
 
 ## Installation
 
