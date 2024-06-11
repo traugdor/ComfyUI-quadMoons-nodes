@@ -20,17 +20,17 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
  
     ![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/d2c8be0e-f66b-48bb-bdd8-f8b0fa7ce06c)
 
-    * **Normalize Image Dimensions** - Choose between SD1.5 and SDXL image dimension normalization. This node will quickly calculate which input is the largest and normalize both inputs to be the same size or smaller than the base image for the chosen platform.
+    * **Normalize Image Dimensions** - Choose between SD1.5 and SDXL image dimension normalization. This node will quickly calculate an appropriate image size for the platform of your choosing. SD1.5 will clamp the size of a single edge to a maximum or minimum of 512 pixels and SDXL will clamp the dimensions to 1024 pixels on a single edge. Giving attention to minimize will clamp the longest edge to the pixel length. An attention to maximize will clamp the shortest edge to the pixel length. This is done so that input images are the appropriate size for the platform you're working with. Shrinking an image will use an area downscale algorithm. Expanding an image will use a bicubic upscale algorithm. These are used for speed and accuracy of the final image.
 
-    ![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/4b2d8208-599c-4eb2-8bf6-42cded26cadf)
+    ![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/e215ef4e-dc53-42bb-9a44-b88a3b3b03aa)
 
 * **INT Conditional Operation** - Choose between two integer inputs on the fly using conditional logical operators to compare them. Works great for returning the largest or smallest input depending on your needs.
 
 ![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/fc4ce451-a5f7-4151-b81d-c219b8f6fba0)
 
-* **KSampler - Extra Outputs** - Need to use the same seed value between nodes? Want to cleanup your workflow so you don't have to reuse the same node everywhere. `KSampler - Extra Outputs` may just be what you need to incorporate into your workflow!
+* **KSampler - Extra Outputs** - All-in-one KSampler node that includes a latent upscaler and seed output for reuse with other samplers. `KSampler - Extra Outputs` may just be what you need to incorporate into your workflow! 
 
-![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/96a65456-184e-4558-8ea2-b67651de645e)
+![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/bc0b5c57-70ce-4629-a469-56f581a2069d)
 
 
 ### Planned Nodes
