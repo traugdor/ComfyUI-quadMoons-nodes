@@ -47,6 +47,15 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 
 Example (image contains workflow using Impact Pack and this node):
 
+![workflow(4)](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/e06ed8ba-979b-4c2e-b23f-5a01c61c7cf4)
+
+Before and After:
+
+<p align="center">
+  <img src="https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/04ce4886-655c-447f-ae21-7db91e1a7924" alt="before" width="300" hspace="10"/>
+  <img src="https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/6665c484-5f7b-4bab-8423-965339158d3b" alt="after" width="300" hspace="10"/>
+</p>
+
 ### Planned Nodes
 * **Smart Negative** - Save and reuse common negative prompts that are used with the model of your choice. (***WIP***)
 * **Smart Template** - Save and reuse common prompt templates that are used with the model of your choice. (***WIP***)
