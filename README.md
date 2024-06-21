@@ -32,6 +32,20 @@ This is a repository of all the nodes I wanted to have but couldn't find anywher
 
 ![image](https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/bc0b5c57-70ce-4629-a469-56f581a2069d)
 
+* **Change Background (SEGM SEGS)** - This node is designed to work with Impact Pack from ltdrdata (and even borrows some code to ensure full compatibility with the segs output from the SEGM Detector). What it does is take an input image, and change the background using whatever process you determine as defined by the SEGS input. This 2-pass sampler will change the background in one pass and then resample the entire image as a whole to ensure the new background and the foreground are seamlessly blended.
+    <br>
+    Inputs:
+    * Model - Model used to generate the background as determinted by the SEGS input.
+    * Model 2 - Model used to redraw the image in the 2nd pass.
+    * Positive - Positive conditioning used to generate the background.
+    * Positive 2 - Positive conditioning used to redraw the image as a whole.
+    * Negative - Negative conditioning used to generate the badkground.
+    * Negative 2 - Negative conditioning used to redraw the image as a whole.
+    * Image - The desired input image that will be redrawn using the above inputs.
+    * VAE - The desired VAE used to encode and decode the image to latent and vice versa.
+    * segs_from_SEGM_Detector - SEGS output from Impact Pack SEGM Detector (SEGS) node. This input will be be understood to define the boundaries of the foreground and background of the input image.
+
+Example (image contains workflow using Impact Pack and this node):
 
 ### Planned Nodes
 * **Smart Negative** - Save and reuse common negative prompts that are used with the model of your choice. (***WIP***)

@@ -11,7 +11,7 @@ from .converters import IntToString, FloatToString, BoolToString, NumberToString
 from .conditionals import INTCompare
 from .samplers import qmKSampler, qmKSamplerAdvanced
 from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
-
+from .changeBackground import qmChangeBackground
 
 NODE_CLASS_MAPPINGS = {
     "quadmoonThebutton": quadmoonThebutton,
@@ -30,6 +30,7 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonSmartNeg": qmSmartNegative,
     "quadmoonSavePrompt": qmSavePrompt,
     "quadmoonSaveNeg": qmSaveNegative,
+    "quadmoonChangeBackground": qmChangeBackground,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -49,6 +50,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonSmartNeg": "CLIPTextEncode - Smart Negative",
     "quadmoonSavePrompt": "Save Smart Prompt Config",
     "quadmoonSaveNeg": "Save Smart Negative Config",
+    "quadmoonChangeBackground": "Change Background of Image (SEGM SEGS)",
 }
 
 WEB_DIRECTORY = "js"
