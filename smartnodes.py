@@ -11,7 +11,7 @@ import comfy.sd
 
 import folder_paths
 
-SMARTNODESNAME="QuadmoonNodes/In-Progress"
+SMARTNODESNAME="QuadmoonNodes/SmartNodes"
 
 def check_config_file(filename):
             if os.path.exists(filename):
@@ -98,7 +98,7 @@ class qmSmartNegative:
             "clip": ("CLIP", {"forceInput": True})
         },
         "optional": {
-            "optional_text": ("STRING", {"forceInput": True}),
+            "optional_text": ("STRING", {"default": "text, watermark, ", "multiline": True,}),
         }}
     
     RETURN_TYPES = ("CONDITIONING",)

@@ -56,9 +56,11 @@ Before and After:
   <img src="https://github.com/traugdor/ComfyUI-quadMoons-nodes/assets/6344355/6665c484-5f7b-4bab-8423-965339158d3b" alt="after" width="300" hspace="10"/>
 </p>
 
+* **Smart Negative** - Save and reuse common negative prompts that are used with the model of your choice. 
+* **Smart Prompt** - Save and reuse common prompt templates that are used with the model of your choice. (***WIP***)
+
 ### Planned Nodes
-* **Smart Negative** - Save and reuse common negative prompts that are used with the model of your choice. (***WIP***)
-* **Smart Template** - Save and reuse common prompt templates that are used with the model of your choice. (***WIP***)
+
 
 ## Installation
 
