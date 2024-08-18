@@ -13,7 +13,7 @@ const HIDDEN_TAG = "qmHide"
 
 function updateWidgets(node, widget) {
     var widgets = ["upscale_method","ratio"];
-    if(node.comfyClass === "quadmoonKSampler" && widget.name === "upscale_latent"){
+    if((node.comfyClass === "quadmoonKSampler" || node.comfyClass === "quadmoonRotationalSampler") && widget.name === "upscale_latent"){
         var wVal = widget.value;
         switch(wVal){
             case "Yes":
@@ -50,6 +50,29 @@ app.registerExtension({
     name: "qmNodes.qmKSampler",
     nodeCreated(node) {
         if (node.comfyClass === "quadmoonKSampler") {
+            for (const w of node.widgets || []) {
+                let widgetValue = w.value;
+                let originalDescriptor = Object.getOwnPropertyDescriptor(w, 'value');
+                updateWidgets(node, w);
+                Object.defineProperty(w, 'value', {
+                    get() {
+                        let valueToReturn = originalDescriptor && originalDescriptor.get
+                            ? originalDescriptor.get.call(w)
+                            : widgetValue;
+                        return valueToReturn;
+                    },
+                    set(newVal) {
+                        if (originalDescriptor && originalDescriptor.set) {
+                            originalDescriptor.set.call(w, newVal);
+                        } else {
+                            widgetValue = newVal;
+                        }
+                        updateWidgets(node, w);
+                    }
+                });
+            }
+        }
+        if (node.comfyClass === "quadmoonRotationalSampler") {
             for (const w of node.widgets || []) {
                 let widgetValue = w.value;
                 let originalDescriptor = Object.getOwnPropertyDescriptor(w, 'value');

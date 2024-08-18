@@ -58,6 +58,13 @@ Before and After:
 
 * **Smart Negative** - Save and reuse common negative prompts that are used with the model of your choice. 
 * **Smart Prompt** - Save and reuse common prompt templates that are used with the model of your choice. (***WIP***)
+* **A1111 Alternating Prompts** - A special node that will try to alternate between two prompts that contain a `[alternate|this]` style prompt. Parameters include:
+  * All normal KSampler parameters
+  * *Image Advance* - How many steps from the current step to generate the image before swapping to the next word in the prompt
+  * *Weight* - A percentage value describing how much of the image generation should be done with the Image Advance technique. 
+  * *New Seed After Steps*: How many steps should be generated before selecting a new seed.
+  
+  Experimenting with values can achieve different results, but the default values are best for most images.
 
 ### Planned Nodes
 

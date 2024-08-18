@@ -9,7 +9,7 @@ from .theButton import quadmoonThebutton
 from .clipTextEncoder import quadmoonCLIPTextEncode
 from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
 from .conditionals import INTCompare
-from .samplers import qmKSampler, qmKSamplerAdvanced
+from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler
 from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
 from .changeBackground import qmChangeBackground
 
@@ -24,6 +24,7 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonConvertNormalizeHW": NormalizeHW,
     "quadmoonKSampler": qmKSampler,
     "quadmoonKSamplerAdvanced": qmKSamplerAdvanced,
+    "quadmoonRotationalSampler": qmRotationalSampler,
     "quadmoonModelLoader": qmModelLoader,
     "quadmoonLoadConfigs": qmLoadConfigs,
     "quadmoonSmartPrompt": qmSmartPrompt,
@@ -44,6 +45,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonConvertNormalizeHW": "Normalize Image Dimensions",
     "quadmoonKSampler": "KSampler - Extra Outputs",
     "quadmoonKSamplerAdvanced": "KSamplerAdvanced - Extra Outputs",
+    "quadmoonRotationalSampler": "KSamplerAdvanced - Alternating Sampling",
     "quadmoonModelLoader": "Load Model - Smart",
     "quadmoonLoadConfigs": "Load Config - Smart",
     "quadmoonSmartPrompt": "CLIPTextEncode - Smart Prompt",
