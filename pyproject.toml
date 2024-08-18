@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-quadmoons-nodes"
 description = "These are just some nodes I wanted and couldn't find where anyone else had made them yet."
-version = "1.1.0"
+version = "1.1.1"
 license = "LICENSE"
 
 [project.urls]
