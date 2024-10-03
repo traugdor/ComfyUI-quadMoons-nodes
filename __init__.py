@@ -54,7 +54,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonSavePrompt": "Save Smart Prompt Config",
     "quadmoonSaveNeg": "Save Smart Negative Config",
     "quadmoonChangeBackground": "Change Background of Image (SEGM SEGS)",
-    "quadmoonLatentImage": "Empty Latent Image",
+    "quadmoonLatentImage": "Empty Latent Image (orientation)",
 }
 
 WEB_DIRECTORY = "js"
