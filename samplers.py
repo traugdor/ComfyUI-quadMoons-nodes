@@ -170,8 +170,8 @@ class qmRotationalSampler:
             }
         }
     
-    RETURN_TYPES = ("LATENT",)
-    RETURN_NAMES = ("LATENT",)
+    RETURN_TYPES = ("LATENT","STRING", "STRING")
+    RETURN_NAMES = ("LATENT","POSITIVE", "NEGATIVE")
     FUNCTION = "qmRotate"
 
     CATEGORY = "QuadmoonNodes/sampling"
@@ -265,5 +265,5 @@ class qmRotationalSampler:
             width = round(out["samples"].shape[3] * ratio)
             height = round(out["samples"].shape[2] * ratio)
             s["samples"] = comfy.utils.common_upscale(out["samples"], width, height, upscale_method, "disabled")
-            return (s,)
-        return (out,)
+            out = s
+        return (out, prompt, negPrompt,)
