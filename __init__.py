@@ -9,7 +9,7 @@ from .theButton import quadmoonThebutton
 from .clipTextEncoder import quadmoonCLIPTextEncode
 from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
 from .conditionals import INTCompare
-from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler
+from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler, qmLatentImage
 from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
 from .changeBackground import qmChangeBackground
 
@@ -32,6 +32,7 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonSavePrompt": qmSavePrompt,
     "quadmoonSaveNeg": qmSaveNegative,
     "quadmoonChangeBackground": qmChangeBackground,
+    "quadmoonLatentImage": qmLatentImage,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -53,6 +54,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonSavePrompt": "Save Smart Prompt Config",
     "quadmoonSaveNeg": "Save Smart Negative Config",
     "quadmoonChangeBackground": "Change Background of Image (SEGM SEGS)",
+    "quadmoonLatentImage": "Empty Latent Image",
 }
 
 WEB_DIRECTORY = "js"

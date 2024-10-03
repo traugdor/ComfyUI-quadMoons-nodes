@@ -267,3 +267,38 @@ class qmRotationalSampler:
             s["samples"] = comfy.utils.common_upscale(out["samples"], width, height, upscale_method, "disabled")
             out = s
         return (out, prompt, negPrompt,)
+    
+class qmLatentImage:
+    orientations = ["original", "force-landscape", "force-portrait"]
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": { 
+                "width": ("INT", {"default": 512, "min": 16, "max": MAX_RESOLUTION, "step": 8}),
+                "height": ("INT", {"default": 512, "min": 16, "max": MAX_RESOLUTION, "step": 8}),
+                "batch_size": ("INT", {"default": 1, "min": 1, "max": 4096}),
+                "orientation": (s.orientations,)
+                }
+            }
+    RETURN_TYPES = ("LATENT",)
+    FUNCTION = "qmLatent"
+
+    CATEGORY = "latent"
+
+    def qmLatent(self, width, height, batch_size, orientation):
+        #if width > height it is already landscape
+        match orientation:
+            case "force-landscape":
+                if (height > width): ## if it is portrait, then swap
+                    temp = height
+                    height = width
+                    width = temp
+            case "force-portrait":
+                if (width > height): ## if it is landscape, then swap
+                    temp = height
+                    height = width
+                    width = height
+
+        latent = torch.zeros([batch_size, 4, height // 8, width // 8], device=self.device)
+        return ({"samples":latent}, )
