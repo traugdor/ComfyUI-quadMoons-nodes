@@ -275,8 +275,8 @@ class qmLatentImage:
     def INPUT_TYPES(s):
         return {
             "required": { 
-                "width": ("INT", {"default": 512, "min": 16, "max": MAX_RESOLUTION, "step": 8}),
-                "height": ("INT", {"default": 512, "min": 16, "max": MAX_RESOLUTION, "step": 8}),
+                "width": ("INT", {"default": 512, "min": 16, "max": 16384, "step": 8}),
+                "height": ("INT", {"default": 512, "min": 16, "max": 16384, "step": 8}),
                 "batch_size": ("INT", {"default": 1, "min": 1, "max": 4096}),
                 "orientation": (s.orientations,)
                 }
