@@ -271,7 +271,7 @@ class qmRotationalSampler:
 class qmLatentImage:
     def __init__(self):
         self.device = comfy.model_management.intermediate_device()
-        
+
     orientations = ["original", "force-landscape", "force-portrait"]
 
     @classmethod
@@ -301,7 +301,7 @@ class qmLatentImage:
                 if (width > height): ## if it is landscape, then swap
                     temp = height
                     height = width
-                    width = height
+                    width = temp
 
         latent = torch.zeros([batch_size, 4, height // 8, width // 8], device=self.device)
         return ({"samples":latent}, )
