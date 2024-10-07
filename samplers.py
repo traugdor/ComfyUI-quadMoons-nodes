@@ -269,6 +269,9 @@ class qmRotationalSampler:
         return (out, prompt, negPrompt,)
     
 class qmLatentImage:
+    def __init__(self):
+        self.device = comfy.model_management.intermediate_device()
+        
     orientations = ["original", "force-landscape", "force-portrait"]
 
     @classmethod
