@@ -4,11 +4,10 @@ import os
 import sys
 
 # Assuming your script is two folders deep
-current_file_directory = os.path.dirname(os.path.realpath(__file__))
-project_root = os.path.abspath(os.path.join(current_file_directory, "..", ".."))
-comfy_folder_path = os.path.join(project_root, "comfy")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), "comfy"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.getcwd())))
 
-sys.path.insert(0, comfy_folder_path)
+import comfy
 
 class qmBatchFromLatent:
     def __init__(self):
@@ -30,6 +29,6 @@ class qmBatchFromLatent:
     DESCRIPTION = "Create a new batch of latent images from the input to be denoised via sampling."
 
     def qmCopy(self, latent, batch_size=1):
-        latent = latent.to(self.device).view(1, *latent.shape[1:])
-        latent_batch = latent.repeat(batch_size, 1, 1, 1)
+        latent_tensor = latent["samples"].to(self.device).view(1, *latent["samples"].shape[1:])
+        latent_batch = latent_tensor.repeat(batch_size, 1, 1, 1)
         return ({"samples":latent_batch}, )

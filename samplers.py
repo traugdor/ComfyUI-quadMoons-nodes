@@ -305,3 +305,84 @@ class qmLatentImage:
 
         latent = torch.zeros([batch_size, 4, height // 8, width // 8], device=self.device)
         return ({"samples":latent}, )
+
+class qmKSamplerBatched:
+    upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic", "bislerp"]
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {"required":
+                    {
+                        "model": ("MODEL",),
+                        "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                        "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
+                        "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
+                        "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
+                        "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
+                        "positive": ("CONDITIONING", ),
+                        "negative": ("CONDITIONING", ),
+                        "latent_image": ("LATENT", {"tooltip": "A single latent or batch of latents that you wish to process individually."}),
+                        "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
+                    },
+                    "optional":
+                    {
+
+                    }
+                }
+
+    RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING","INT","LATENT",)
+    RETURN_NAMES = ("MODEL", "POSITIVE", "NEGATIVE", "SEED", "LATENT",)
+    FUNCTION = "qmSample"
+    DESCRIPTION = "Allows for sampling of multiple latents when memory does not allow them all to be sampled at once."
+
+    CATEGORY = "QuadmoonNodes/sampling"
+
+    @staticmethod
+    def sample(model, seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise):
+        disable_noise = False
+        start_step = None
+        last_step=None
+        force_full_denoise=False
+        latent = latent_image
+        qmlatent_image = latent["samples"]
+        print("Shape of latent", qmlatent_image.shape)
+        if disable_noise:
+            noise = torch.zeros(qmlatent_image.size(), dtype=qmlatent_image.dtype, layout=qmlatent_image.layout, device="cpu")
+        else:
+            batch_inds = latent["batch_index"] if "batch_index" in latent else None
+            noise = comfy.sample.prepare_noise(qmlatent_image, seed, batch_inds)
+
+        noise_mask = None
+        if "noise_mask" in latent:
+            noise_mask = latent["noise_mask"]
+
+        callback = latent_preview.prepare_callback(model, steps)
+        disable_pbar = not comfy.utils.PROGRESS_BAR_ENABLED
+        return comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, qmlatent_image,
+                                    denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
+                                    force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+
+    def qmSample(self, model, seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise):
+        individual_latents = torch.split(latent_image["samples"], 1, dim=0)  # Split along the batch dimension
+        processed_latents = []
+
+        # Loop over each latent and process it individually
+        for i, single_latent in enumerate(individual_latents):
+            # Modify the seed by adding an offset for each latent
+
+            # Prepare the latent as a single-element batch dictionary for `common_ksampler`
+            single_latent_dict = {"samples": single_latent, "batch_index": i}
+            processed_latent = self.sample(
+                model, seed, steps, cfg, sampler_name, scheduler,
+                positive, negative, single_latent_dict, denoise=denoise
+            )
+            
+            # Append the processed latent to the list
+            processed_latents.append(processed_latent)
+
+        # Stack processed latents back into a batch
+        latent_batch = torch.cat(processed_latents, dim=0)  # Combine along the batch dimension
+
+        out = latent_image.copy()
+        out["samples"] = latent_batch
+        return (model, positive, negative, seed, out,)

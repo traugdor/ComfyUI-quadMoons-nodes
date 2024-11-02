@@ -9,7 +9,7 @@ from .theButton import quadmoonThebutton
 from .clipTextEncoder import quadmoonCLIPTextEncode
 from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
 from .conditionals import INTCompare
-from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler, qmLatentImage
+from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler, qmLatentImage, qmKSamplerBatched
 from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
 from .changeBackground import qmChangeBackground
 from .createBatchFromLatent import qmBatchFromLatent
@@ -35,6 +35,7 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonChangeBackground": qmChangeBackground,
     "quadmoonLatentImage": qmLatentImage,
     "quadmoonBatchFromLatent": qmBatchFromLatent,
+    "quadmoonKSamplerBatched": qmKSamplerBatched,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -58,6 +59,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonChangeBackground": "Change Background of Image (SEGM SEGS)",
     "quadmoonLatentImage": "Empty Latent Image (orientation)",
     "quadmoonBatchFromLatent": "Batch From Latent Image",
+    "quadmoonKSamplerBatched": "KSampler For Each",
 }
 
 WEB_DIRECTORY = "js"
