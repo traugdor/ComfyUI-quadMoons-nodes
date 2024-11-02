@@ -15,8 +15,8 @@ class quadmoonCLIPTextEncode:
     def INPUT_TYPES(cls):
         inputs = {
             "required": {
-                "clip": ("CLIP", {"forceInput": True}),
-                "text": ("STRING", {"forceInput": True})
+                "clip": ("CLIP", {"forceInput": True, "tooltip": "A CLIP model used for encoding the text."}),
+                "text": ("STRING", {"forceInput": True, "tooltip": "The text to be encoded."})
             }
         }
 
@@ -24,6 +24,7 @@ class quadmoonCLIPTextEncode:
 
     CATEGORY = "QuadmoonNodes"
     RETURN_TYPES=("CONDITIONING",)
+    OUTPUT_TOOLTIPS=("A conditioning containing the embedded text used to guide the diffusion model.",)
     FUNCTION = "qmTextEncode"
 
     def qmTextEncode(self, clip, text):

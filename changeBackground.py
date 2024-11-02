@@ -56,6 +56,7 @@ class qmChangeBackground:
                 "segs_from_SEGM_Detector": ("SEGS",),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
                 "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
+                "steps_2": ("INT", {"default": 12, "min": 1, "max": 10000}),
                 "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
                 "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
                 "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
@@ -68,8 +69,9 @@ class qmChangeBackground:
     CATEGORY = "QuadmoonNodes/sampling"
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "qmChangeBackground"
+    DESCRIPTION="This node is designed to work with Impact Pack from ltdrdata (and even borrows some code to ensure full compatibility with the segs output from the SEGM Detector). What it does is take an input image, and change the background using whatever process you determine as defined by the SEGS input. This 2-pass sampler will change the background in one pass and then resample the entire image as a whole to ensure the new background and the foreground are seamlessly blended. "
 
-    def qmChangeBackground(self, model, model_2, positive, positive_2, negative, negative_2, image, vae, segs_from_SEGM_Detector, seed, steps, cfg, sampler_name, scheduler, denoise, denoise_2):
+    def qmChangeBackground(self, model, model_2, positive, positive_2, negative, negative_2, image, vae, segs_from_SEGM_Detector, seed, steps, steps_2, cfg, sampler_name, scheduler, denoise, denoise_2):
         mask = self.get_mask_from_segs(segs_from_SEGM_Detector)
         
         ## We were going to blur the mask, but it kept throwing an error, just resample the whole image with a lower denoising after initial pass.
@@ -126,7 +128,7 @@ class qmChangeBackground:
                                     denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
                                     force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
         ## second pass 12 steps, 0.56 denoise, noise mask removed.
-        samples = comfy.sample.sample(model_2, noise, 12, cfg, sampler_name, scheduler, positive_2, negative_2, samples,
+        samples = comfy.sample.sample(model_2, noise, steps_2, cfg, sampler_name, scheduler, positive_2, negative_2, samples,
                                     denoise=denoise_2, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
                                     force_full_denoise=force_full_denoise, noise_mask=None, callback=callback, disable_pbar=disable_pbar, seed=seed)
         out = latent.copy()
