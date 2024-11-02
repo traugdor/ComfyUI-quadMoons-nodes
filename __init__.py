@@ -12,6 +12,7 @@ from .conditionals import INTCompare
 from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler, qmLatentImage
 from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
 from .changeBackground import qmChangeBackground
+from .createBatchFromLatent import qmBatchFromLatent
 
 NODE_CLASS_MAPPINGS = {
     "quadmoonThebutton": quadmoonThebutton,
@@ -33,6 +34,7 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonSaveNeg": qmSaveNegative,
     "quadmoonChangeBackground": qmChangeBackground,
     "quadmoonLatentImage": qmLatentImage,
+    "quadmoonBatchFromLatent": qmBatchFromLatent,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -55,6 +57,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonSaveNeg": "Save Smart Negative Config",
     "quadmoonChangeBackground": "Change Background of Image (SEGM SEGS)",
     "quadmoonLatentImage": "Empty Latent Image (orientation)",
+    "quadmoonBatchFromLatent": "Batch From Latent Image",
 }
 
 WEB_DIRECTORY = "js"

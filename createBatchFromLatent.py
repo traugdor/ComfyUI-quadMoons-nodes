@@ -10,7 +10,7 @@ comfy_folder_path = os.path.join(project_root, "comfy")
 
 sys.path.insert(0, comfy_folder_path)
 
-class EmptyLatentImage:
+class qmBatchFromLatent:
     def __init__(self):
         self.device = comfy.model_management.intermediate_device()
 
