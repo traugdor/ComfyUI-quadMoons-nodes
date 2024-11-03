@@ -65,6 +65,8 @@ Before and After:
   * *New Seed After Steps*: How many steps should be generated before selecting a new seed.
   
   Experimenting with values can achieve different results, but the default values are best for most images.
+* **Batch From Latent** - Create a batch of latents for processing from a single input latent
+* **KSampler For Each** - Sample a batch of latents sequentially instead of at once. Saves on GPU VRAM for low VRAM devices
 
 ### Planned Nodes
 
@@ -82,7 +84,7 @@ To uninstall **ComfyUI-quadMoons-nodes**, browse to your `custom_nodes` folder a
 
 ## Support and Contribution
 
-For support, suggestions, or contributions, please visit the [GitHub repository](https://github.com/traugdor/ComfyUI-quadMoons-nodes), submit an issue/pull request, or contact me on Discord (@quadmoon). I value your feedback greatly!
+For support, suggestions, or contributions, please visit the [GitHub repository](https://github.com/traugdor/ComfyUI-quadMoons-nodes) and submit an issue/pull request. I value your feedback greatly!
 
 ---
 
