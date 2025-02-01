@@ -22,6 +22,11 @@ function rebootComfy(args) {
 	}
 }
 
+function startComfy(args) {
+        console.log("Queueing prompt")
+        app.queuePrompt(-1);
+}
+
 app.registerExtension({
     name:"quadmoonsNodes.theButton",
     nodeCreated(node) {
@@ -31,6 +36,9 @@ app.registerExtension({
             });
             const rebootComfyButton = node.addWidget("button", "REBOOT ComfyUI", "", (event) => {
                 rebootComfy(event);
+            });
+            const startComfyButton = node.addWidget("button", "START queue", "", (event) => {
+                startComfy(event);
             });
         }
         for (const w of node.widgets || []) {

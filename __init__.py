@@ -7,7 +7,7 @@
 
 from .theButton import quadmoonThebutton
 from .clipTextEncoder import quadmoonCLIPTextEncode
-from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW
+from .converters import IntToString, FloatToString, BoolToString, NumberToString, NormalizeHW, ImageToPrompt
 from .conditionals import INTCompare
 from .samplers import qmKSampler, qmKSamplerAdvanced, qmRotationalSampler, qmLatentImage, qmKSamplerBatched
 from .smartnodes import qmModelLoader, qmLoadConfigs, qmSmartPrompt, qmSmartNegative, qmSavePrompt, qmSaveNegative
@@ -21,6 +21,7 @@ NODE_CLASS_MAPPINGS = {
     "quadmoonConvertFloatToString": FloatToString,
     "quadmoonConvertBoolToString": BoolToString,
     "quadmoonConvertNumberToString": NumberToString,
+    "quadmoonConvertImageToPrompt": ImageToPrompt,
     "quadmoonINTConditionalOperation": INTCompare,
     "quadmoonConvertNormalizeHW": NormalizeHW,
     "quadmoonKSampler": qmKSampler,
@@ -45,6 +46,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "quadmoonConvertFloatToString": "Convert Float to String",
     "quadmoonConvertBoolToString": "Convert Bool to String",
     "quadmoonConvertNumberToString": "Convert Number to String",
+    "quadmoonConvertImageToPrompt": "Get A1111 Prompt from Image",
     "quadmoonINTConditionalOperation": "INT Conditional Operation",
     "quadmoonConvertNormalizeHW": "Normalize Image Dimensions",
     "quadmoonKSampler": "KSampler - Extra Outputs",

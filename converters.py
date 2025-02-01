@@ -2,11 +2,20 @@ from typing import TypeAlias
 
 import os
 import sys
+import re
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), "comfy"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.getcwd())))
 
+comfy_root = os.path.abspath(os.path.join(__file__, "../../"))
+sys.path.insert(0, comfy_root)
+
 import comfy.utils
+import folder_paths
+import node_helpers
+
+from PIL import Image
+from PIL.PngImagePlugin import PngInfo
 
 number: TypeAlias = int | float
 
@@ -159,3 +168,55 @@ class NormalizeHW:
         s = comfy.utils.common_upscale(samples, newwidth, newheight, method, "disabled")
         s = s.movedim(1,-1)
         return(s,)
+    
+class ImageToPrompt:
+    ### Extract image information from PNG Metadata
+    @classmethod
+    def INPUT_TYPES(cls):
+        input_dir = folder_paths.get_input_directory()
+        files = [f for f in os.listdir(input_dir) if os.path.isfile(os.path.join(input_dir, f))]
+        inputs = {
+            "required": {"image": (sorted(files), {"image_upload": True})},
+            "optional": {}
+        }
+        return inputs
+    
+    RETURN_TYPES = ("STRING", "STRING", "STRING", "INT", "INT", "FLOAT", "INT", "INT", "INT",)
+    RETURN_NAMES = ("POSITIVE", "NEGATIVE", "HI-RES_PROMPT", "SEED", "STEPS", "CFG", "HEIGHT", "WIDTH", "CLIP_SKIP",)
+    FUNCTION = "qmGetMetadata"
+    CATEGORY = "QuadmoonNodes/Converters"
+    
+    def qmGetMetadata(self, image):
+        image_path = folder_paths.get_annotated_filepath(image)
+
+        img = Image.open(image_path)
+
+        # get the metadata
+        metadata = img.info
+
+        # Check if there are any keys like 'parameters' (this is where the A1111 data is stored)
+        parameters = metadata.get("parameters", "No parameters metadata found.")
+
+        if parameters != "No parameters metadata found.":
+            # Extract Prompt
+            prompt = parameters.split("Negative prompt:")[0].strip()
+
+            # Extract Negative Prompt
+            negative_prompt_match = re.search(r"Negative prompt: (.+?)(?=Steps:)", parameters, re.DOTALL)
+            negative_prompt = negative_prompt_match.group(1).strip() if negative_prompt_match else None
+
+            # Extract High-res Prompt
+            hires_prompt_match = re.search(r"Hires prompt: \"(.+?)\"", parameters, re.DOTALL)
+            hires_prompt = hires_prompt_match.group(1).strip() if hires_prompt_match else None
+
+            # Extract other fields
+            seed = re.search(r"Seed: (\d+)", parameters).group(1)
+            steps = re.search(r"Steps: (\d+)", parameters).group(1)
+            cfg_scale = re.search(r"CFG scale: (\d+)", parameters).group(1)
+            image_size = re.search(r"Size:\s*(\d+)x(\d+)", parameters)
+            if image_size:
+                width, height = image_size.groups()
+            clip_skip = re.search(r"Clip skip: (\d+)", parameters).group(1)
+
+            # ("POSITIVE", "NEGATIVE", "HI-RES_PROMPT", "SEED", "STEPS", "CFG", "HEIGHT", "WIDTH", "CLIP_SKIP",)
+            return(prompt, negative_prompt, hires_prompt, int(seed), int(steps), float(cfg_scale), int(height), int(width), -int(clip_skip),)
