@@ -21,7 +21,7 @@ def check_config_file(filename):
             
 def create_empty_config(filename):
     with open(filename, 'w') as jsonfile:
-        json.dump({}, jsonfile)
+        json.dump({"none": [{"prompt": "", "negative": "", "other_data": "----NONE----"}]}, jsonfile, indent=4)
     print("Quadmoon's Smart Nodes couldn't find the config file! A new one has been created!")
 
 def update_or_create_config(jsonfile, trigger, prompt="", negative="", other_data=""):
