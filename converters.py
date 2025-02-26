@@ -114,7 +114,7 @@ class NormalizeHW:
         inputs = {
             "required": {
                 "image": ("IMAGE",),
-                "platform":(["SD1.5", "SDXL"],),
+                "platform":(["SD1.5", "XL"],),
                 "orientation":(["original", "portrait", "landscape"],),
                 "attention": (["minimize", "maximize"],)
             }
