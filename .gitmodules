@@ -1,0 +1,3 @@
+[submodule "efficiency-nodes"]
+	path = efficiency-nodes
+	url = https://github.com/jags111/efficiency-nodes-comfyui
