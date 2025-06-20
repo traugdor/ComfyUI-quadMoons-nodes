@@ -333,7 +333,7 @@ class qmKSamplerBatched:
     RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING","INT","LATENT",)
     RETURN_NAMES = ("MODEL", "POSITIVE", "NEGATIVE", "SEED", "LATENT",)
     FUNCTION = "qmSample"
-    DESCRIPTION = "Allows for sampling of multiple latents when memory does not allow them all to be sampled at once."
+    DESCRIPTION = "Allows for sampling of multiple latents when memory does not allow them all to be sampled at once. NOT COMPATIBLE WITH ANIMATEDIFF!"
 
     CATEGORY = "QuadmoonNodes/sampling"
 
@@ -345,12 +345,7 @@ class qmKSamplerBatched:
         force_full_denoise=False
         latent = latent_image
         qmlatent_image = latent["samples"]
-        print("Shape of latent", qmlatent_image.shape)
-        if disable_noise:
-            noise = torch.zeros(qmlatent_image.size(), dtype=qmlatent_image.dtype, layout=qmlatent_image.layout, device="cpu")
-        else:
-            batch_inds = latent["batch_index"] if "batch_index" in latent else None
-            noise = comfy.sample.prepare_noise(qmlatent_image, seed, batch_inds)
+        noise = latent["noise"]
 
         noise_mask = None
         if "noise_mask" in latent:
@@ -363,7 +358,15 @@ class qmKSamplerBatched:
                                     force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
 
     def qmSample(self, model, seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise):
+        generator = torch.manual_seed(seed)
+        entire_batch = latent_image["samples"]
+        print("Shape of entire batch", entire_batch.shape)
+        print("entire_batch.dtype", entire_batch.dtype)
+        print("entire_batch.layout", entire_batch.layout)
+        batch_noise = torch.randn(entire_batch.size(), dtype=entire_batch.dtype, layout=entire_batch.layout, generator=generator, device="cpu")
+        print("batch_noise", batch_noise.size())
         individual_latents = torch.split(latent_image["samples"], 1, dim=0)  # Split along the batch dimension
+        individual_noises = torch.split(batch_noise, 1, dim=0)
         processed_latents = []
 
         # Loop over each latent and process it individually
@@ -371,7 +374,7 @@ class qmKSamplerBatched:
             # Modify the seed by adding an offset for each latent
 
             # Prepare the latent as a single-element batch dictionary for `common_ksampler`
-            single_latent_dict = {"samples": single_latent, "batch_index": i}
+            single_latent_dict = {"samples": single_latent, "noise": individual_noises[i]}
             processed_latent = self.sample(
                 model, seed, steps, cfg, sampler_name, scheduler,
                 positive, negative, single_latent_dict, denoise=denoise
