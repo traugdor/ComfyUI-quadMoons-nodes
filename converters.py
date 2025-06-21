@@ -3,6 +3,7 @@ from typing import TypeAlias
 import os
 import sys
 import re
+import math
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), "comfy"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.getcwd())))
@@ -114,7 +115,7 @@ class NormalizeHW:
         inputs = {
             "required": {
                 "image": ("IMAGE",),
-                "platform":(["SD1.5", "XL"],),
+                "platform":(["SD1.5", "XL", "FLUX"],),
                 "orientation":(["original", "portrait", "landscape"],),
                 "attention": (["minimize", "maximize"],)
             }
@@ -131,34 +132,15 @@ class NormalizeHW:
         newheight = 0
         newwidth = 0
         temp = 0
-        if(attention == "minimize"):
-            if(platform == "SD1.5"):
-                if(height > width):
-                    divisor = height/512.0
-                else:
-                    divisor = width/512.0
-            else:
-                if(height > width):
-                    divisor = height/1024.0
-                else:
-                    divisor = width/1024.0
-        else:
-            if(platform == "SD1.5"):
-                if(height > width):
-                    divisor = width/512.0
-                else:
-                    divisor = height/512.0
-            else:
-                if(height > width):
-                    divisor = width/1024.0
-                else:
-                    divisor = height/1024.0
-        newheight = (int)(height/divisor)
-        newwidth = (int)(width/divisor)
-        if((orientation == "portrait" and newheight < newwidth) or (orientation == "landscape" and newwidth < newheight)):
-            temp = newheight
-            newheight = newwidth
-            newwidth = temp
+
+        match platform:
+            case "SD1.5":
+                newheight, newwidth, divisor = self.calculateSD(height, width, attention, orientation, "15")
+            case "XL":
+                newheight, newwidth, divisor = self.calculateSD(height, width, attention, orientation, "XL")
+            case "FLUX":
+                newheight, newwidth, divisor = self.calculateFLUX(height, width, orientation)
+
         method = ""
         if(divisor > 1): #downscaling
             method = "area"
@@ -168,6 +150,37 @@ class NormalizeHW:
         s = comfy.utils.common_upscale(samples, newwidth, newheight, method, "disabled")
         s = s.movedim(1,-1)
         return(s,)
+    
+    def calculateSD(self, height, width, attention, orientation, platform):
+        c = 512.0 if platform == "15" else 1024.0 if platform == "XL" else 0.0
+        d = (height / c if attention == "minimize" else width / c) if height > width else (width / c if attention == "minimize" else height / c)
+        nh, nw = int(height / d), int(width / d)
+        # swap if necessary
+        if (orientation == "portrait" and nw > nh) or (orientation == "landscape" and nh > nw):
+            nh, nw = nw, nh
+
+        return nh, nw, d
+    
+    def calculateFLUX(s,h,w,o):
+        p = h*w
+        pr = math.sqrt(p/1048576.0)
+        nh = (h/pr)
+        nw = (w/pr)
+        psv = [896.0, 832.0, 768.0, 640.0]
+        plv = [1152.0, 1216.0, 1344.0, 1536.0]
+        s = min(nh,nw)
+        cs = min(psv, key=lambda x: abs(s-x))
+        splv = min(plv)
+        nh, nw = (cs, nw*(cs/nh)) if s == nh else (nh*(cs/nw), cs)
+        l = max(nh,nw)
+        if l > splv:
+            cl = min(plv, key=lambda x: abs(l-x))
+            nh, nw = (cl, nw*(cl/nh)) if l == nh else (nh*(cl/nw), cl)
+        if (o == "portrait" and nw > nh) or (o == "landscape" and nh > nw):
+            nh, nw = nw, nh
+        pr = math.sqrt(p/(nh*nw))
+
+        return round(nh), round(nw), pr
     
 class ImageToPrompt:
     ### Extract image information from PNG Metadata
