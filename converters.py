@@ -161,7 +161,7 @@ class NormalizeHW:
 
         return nh, nw, d
     
-    def calculateFLUX(s,h,w,o):
+    def calculateFLUX(self,h,w,o):
         p = h*w
         pr = math.sqrt(p/1048576.0)
         nh = (h/pr)
@@ -178,9 +178,12 @@ class NormalizeHW:
             nh, nw = (cl, nw*(cl/nh)) if l == nh else (nh*(cl/nw), cl)
         if (o == "portrait" and nw > nh) or (o == "landscape" and nh > nw):
             nh, nw = nw, nh
+        nh, nw = (
+            (1024, nw * (1024 / nh)) if nh > nw else (nh * (1024 / nw), 1024)
+        ) if abs(1 - (nh / nw if nh > nw else nw / nh)) < 0.1 else (nh, nw)
         pr = math.sqrt(p/(nh*nw))
 
-        return round(nh), round(nw), pr
+        return round(nh), round(nw), 1/pr
     
 class ImageToPrompt:
     ### Extract image information from PNG Metadata
